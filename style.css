@@ -1,0 +1,126 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #E7F4F9; /* Light blue background */
+    color: #333;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Center the form and header */
+h1 {
+    color: #6E99A5;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+form {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+}
+
+/* Input Field Styling */
+label {
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #6E99A5;
+    font-size: 1em;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #6E99A5;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Placeholder and text centered */
+}
+
+input:focus {
+    outline: none;
+    border-color: #5C808D;
+    box-shadow: 0 0 8px rgba(110, 153, 165, 0.5);
+}
+
+/* Button Styling */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #6E99A5; /* Teal button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #5C808D;
+    transform: scale(1.05);
+}
+
+button:active {
+    background-color: #4A6D74;
+    transform: scale(0.95);
+}
+
+/* Back Button Styling */
+.back-btn {
+    display: inline-block;
+    margin-top: 15px;
+    background-color: #CCCCCC;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.back-btn:hover {
+    background-color: #BBBBBB;
+}
+
+/* Center the "No account? Register" Section */
+.no-account {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.no-account a {
+    text-decoration: none;
+    color: #6E99A5;
+    font-weight: bold;
+}
+
+.no-account a:hover {
+    text-decoration: underline;
+}
+
+/* Custom Styling for the Full Page Layout */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+

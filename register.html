@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <h1>Create New Account</h1>
+        <form action="register.php" method="POST">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="abcd@gmail.com" required>
+            
+            <label>Student ID</label>
+            <input type="text" name="student_id" placeholder="Enter your Student ID" required>
+            
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter your Password" required>
+            
+            <button type="submit">SIGN UP</button>
+        </form>
+        <button class="back-btn" onclick="window.location.href='index.html'">Back</button>
+    </div>
+</body>
+</html>

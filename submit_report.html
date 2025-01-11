@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit New Report</title>
+    <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+    <h1>Submit New Incident Report</h1>
+    <form action="submit_report.php" method="POST" enctype="multipart/form-data">
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" min="<?php echo date('2025-01-11'); ?>" required>
+
+        <label for="time">Time:</label>
+        <input type="time" name="time" id="time" required>
+
+        <label for="gps_location">GPS Location:</label>
+        <input type="text" name="gps_location" id="gps_location" placeholder="Enter GPS location" required>
+
+        <label for="incident_details">Incident Details:</label>
+        <textarea name="incident_details" id="incident_details" rows="5" placeholder="Describe the incident..." required></textarea>
+
+        <label for="image">Upload Image:</label>
+        <input type="file" name="image" id="image" accept="image/*" required>
+
+        <button type="submit">Submit Report</button>
+        <a href="student_dashboard.php" class="back-btn">Back</a>
+    </form>
+</body>
+</html>
