@@ -29,9 +29,11 @@ $result = mysqli_query($conn, $query) or die("Query failed: " . mysqli_error($co
             $(".sidebar").hover(
                 function() {
                     $(this).css("width", "200px");
+                    $(".sidebar a span").css("display", "inline");
                 },
                 function() {
                     $(this).css("width", "60px");
+                    $(".sidebar a span").css("display", "none");
                 }
             );
         });
@@ -54,12 +56,16 @@ $result = mysqli_query($conn, $query) or die("Query failed: " . mysqli_error($co
             height: 100vh;
             transition: width 0.3s;
             position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
         .sidebar:hover {
             width: 200px;
         }
         .sidebar a {
-            display: block;
+            display: flex;
+            align-items: center;
             color: white;
             text-decoration: none;
             padding: 15px;
@@ -67,6 +73,10 @@ $result = mysqli_query($conn, $query) or die("Query failed: " . mysqli_error($co
         }
         .sidebar a:hover {
             background-color: #1a252f;
+        }
+        .sidebar a span {
+            display: none;
+            margin-left: 10px;
         }
         .logout {
             background-color: red;
@@ -100,11 +110,12 @@ $result = mysqli_query($conn, $query) or die("Query failed: " . mysqli_error($co
 <div class="container">
     <!-- Sidebar Navigation -->
     <div class="sidebar">
-        <a href="student_dashboard.php">Dashboard</a>
-        <a href="submit_report.php">Submit New Report</a>
-        <a href="view_all_report.php">View All Reports</a>
-        <a href="edit_profile.php">Edit Profile</a>
-        <a href="logout.php" class="logout">Logout</a>
+		<a><i class=""></i><span>Welcome , <?php echo $student_id ?></span></a>
+        <a href="student_dashboard.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a>
+        <a href="submit_report.php"><i class="fa fa-file"></i><span>Submit New Report</span></a>
+        <a href="view_all_report.php"><i class="fa fa-eye"></i><span>View All Reports</span></a>
+        <a href="edit_profile.php"><i class="fa fa-user"></i><span>Edit Profile</span></a>
+        <a href="logout.php" class="logout"><i class="fa fa-sign-out"></i><span>Logout</span></a>
     </div>
 
     <!-- Main Content -->
@@ -137,6 +148,9 @@ $result = mysqli_query($conn, $query) or die("Query failed: " . mysqli_error($co
         </table>
     </div>
 </div>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </body>
 </html>
