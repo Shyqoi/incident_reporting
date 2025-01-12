@@ -15,12 +15,39 @@ $limit = 5; // Number of reports per page
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
-// Fetch all reports with pagination
-$query = "SELECT * FROM reports ORDER BY id DESC LIMIT $limit OFFSET $offset";
+// Search filters
+$searchVenue = isset($_GET['venue']) ? $_GET['venue'] : "";
+$searchDetails = isset($_GET['details']) ? $_GET['details'] : "";
+$searchDate = isset($_GET['date']) ? $_GET['date'] : "";
+
+// Query to fetch reports based on search criteria
+$query = "SELECT * FROM reports WHERE 1";
+
+if (!empty($searchVenue)) {
+    $query .= " AND venue = '$searchVenue'";
+}
+if (!empty($searchDetails)) {
+    $query .= " AND details LIKE '%$searchDetails%'";
+}
+if (!empty($searchDate)) {
+    $query .= " AND date = '$searchDate'";
+}
+
+$query .= " ORDER BY id DESC LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $query) or die("Query failed: " . mysqli_error($conn));
 
-// Count total records
-$totalQuery = "SELECT COUNT(*) AS total FROM reports";
+// Count total records (for pagination)
+$totalQuery = "SELECT COUNT(*) AS total FROM reports WHERE 1";
+if (!empty($searchVenue)) {
+    $totalQuery .= " AND venue = '$searchVenue'";
+}
+if (!empty($searchDetails)) {
+    $totalQuery .= " AND details LIKE '%$searchDetails%'";
+}
+if (!empty($searchDate)) {
+    $totalQuery .= " AND date = '$searchDate'";
+}
+
 $totalResult = mysqli_query($conn, $totalQuery);
 $totalRow = mysqli_fetch_assoc($totalResult);
 $totalPages = ceil($totalRow['total'] / $limit);
@@ -116,14 +143,38 @@ $totalPages = ceil($totalRow['total'] / $limit);
             background-color: #007bff;
             color: white;
         }
+         .search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+		.search-container form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 81%;
+        }
+        .search-container input, .search-container select, .search-container button {
+            padding: 8px;
+            margin: 5px;
+			
+        }
     </style>
 </head>
 <body>
 
+
 <div class="container">
     <!-- Sidebar Navigation -->
     <div class="sidebar">
-		<a><i class=""></i><span>Welcome , <?php echo $student_id ?></span></a>
+        <a><i class=""></i><span>Welcome , <?php echo $student_id ?></span></a>
         <a href="student_dashboard.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a>
         <a href="submit_report.php"><i class="fa fa-file"></i><span>Submit New Report</span></a>
         <a href="view_report.php"><i class="fa fa-eye"></i><span>View My Reports</span></a>
@@ -134,8 +185,34 @@ $totalPages = ceil($totalRow['total'] / $limit);
 
     <!-- Main Content -->
     <div class="main-content">
-        <h2>All Student Reports</h2>
+        
 
+        <!-- 🔍 Search Form -->
+		<br><br>
+        <div class="search-container">
+            <form method="GET" action="student_dashboard.php">
+                <label for="venue">Venue:</label>
+                <select name="venue">
+                    <option value="">All</option>
+                    <option value="stairs" <?php if ($searchVenue == "stairs") echo "selected"; ?>>Stairs</option>
+                    <option value="lif" <?php if ($searchVenue == "lif") echo "selected"; ?>>Lift</option>
+                    <option value="room" <?php if ($searchVenue == "room") echo "selected"; ?>>Room</option>
+                    <option value="others" <?php if ($searchVenue == "others") echo "selected"; ?>>Others</option>
+                </select>
+
+                <label for="details">Keyword:</label>
+                <input type="text" name="details" placeholder="Enter keyword..." value="<?php echo $searchDetails; ?>">
+
+                <label for="date">Date:</label>
+                <input type="date" name="date" value="<?php echo $searchDate; ?>">
+
+                <button type="submit">Search</button>
+                <a href="student_dashboard.php"><button type="button">Reset</button></a>
+            </form>
+        </div>
+
+                <!-- Reports Table -->
+		<h2>All Student Reports</h2>
         <table>
             <tr>
                 <th>Report ID</th>
@@ -143,6 +220,7 @@ $totalPages = ceil($totalRow['total'] / $limit);
                 <th>Date</th>
                 <th>Time</th>
                 <th>GPS Location</th>
+                <th>Venue</th>  <!-- ✅ Added Venue Column Here -->
                 <th>Details</th>
                 <th>Image</th>
                 <th>Status</th>
@@ -155,6 +233,7 @@ $totalPages = ceil($totalRow['total'] / $limit);
                     <td><?php echo $row['date']; ?></td>
                     <td><?php echo $row['time']; ?></td>
                     <td><?php echo $row['gps_location']; ?></td>
+                    <td><?php echo $row['venue']; ?></td>
                     <td><?php echo $row['details']; ?></td>
                     <td><img src="<?php echo $row['image']; ?>" alt="Report Image" width="100"></td>
                     <td><?php echo $row['status']; ?></td>
@@ -163,14 +242,40 @@ $totalPages = ceil($totalRow['total'] / $limit);
             <?php } ?>
         </table>
 
-        <!-- Pagination -->
+        <!-- ✅ PAGINATION LINKS ADDED HERE -->
         <div class="pagination">
-            <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
-                <a href="student_dashboard.php?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-            <?php } ?>
+            <?php if ($totalPages > 1): ?>
+                <br>
+                <div style="text-align: center;">
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <a href="student_dashboard.php?page=<?php echo $i; ?>&venue=<?php echo $searchVenue; ?>&details=<?php echo $searchDetails; ?>&date=<?php echo $searchDate; ?>"
+                           class="<?php echo ($i == $page) ? 'active' : ''; ?>">
+                            <?php echo $i; ?>
+                        </a>
+                    <?php endfor; ?>
+                </div>
+            <?php endif; ?>
         </div>
-    </div>
-</div>
+
+        <style>
+            .pagination {
+                margin-top: 20px;
+                text-align: center;
+            }
+            .pagination a {
+                padding: 8px 12px;
+                margin: 5px;
+                border: 1px solid #007bff;
+                text-decoration: none;
+                color: #007bff;
+                border-radius: 5px;
+            }
+            .pagination a.active {
+                background-color: #007bff;
+                color: white;
+            }
+        </style>
+
 
 <!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
